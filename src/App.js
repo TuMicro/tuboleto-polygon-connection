@@ -3,12 +3,13 @@ import WalletConnectProvider from '@walletconnect/web3-provider';
 import Web3 from 'web3';
 import React from 'react';
 import { newKitFromWeb3 } from '@celo/contractkit';
-import { providers, BigNumber } from "ethers";
+import { providers } from "ethers";
 
 const { ethers } = require("ethers");
 const sleep = function (ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+const NATIVE_TOKEN_SYMBOL = "MATIC";
 
 class App extends React.Component {
 
@@ -27,7 +28,7 @@ class App extends React.Component {
     }
 
     this.connect = this.connect.bind(this)
-    this.sendAETH = this.sendAETH.bind(this)
+    this.sendNativeToken = this.sendNativeToken.bind(this)
     this.disconnect = this.disconnect.bind(this)
   }
 
@@ -44,7 +45,7 @@ class App extends React.Component {
         });
 
         await provider.enable()
-        const web3 = new Web3(provider);
+        const web3 = new Web3(provider)
         let kit = newKitFromWeb3(web3)
 
         kit.defaultAccount = provider.accounts[0]
@@ -58,8 +59,8 @@ class App extends React.Component {
 
       const amountStr = this.getAmountFromQueryParams();
 
-      // TODO: maybe trigger sendAETH automatically
-      this.sendAETH(amountStr);
+      // TODO: maybe trigger sendNativeToken automatically
+      this.sendNativeToken(amountStr);
 
     } catch (e) {
       console.error(e);
@@ -67,7 +68,7 @@ class App extends React.Component {
 
   }
 
-  sendAETH = async (amountStr) => {
+  sendNativeToken = async (amountStr) => {
     if (this.state.trLoading) {
       console.log("There is a transaction already in progress");
       return;
@@ -94,7 +95,7 @@ class App extends React.Component {
 
       //let amount = kit.web3.utils.toWei(amountStr, 'ether');
       let amount = ethers.utils.parseEther(amountStr);
-      
+
       /*const stabletoken = await kit.contracts.getStableToken();
   
       const tx = await stabletoken.transfer(this.state.someAddress, amount).send(
@@ -116,8 +117,8 @@ class App extends React.Component {
 
       const signer = web3Provider.getSigner(); // este provider debe ser un objeto de la librería ethers
 
-      console.log("amount",amount);
-      console.log("to",this.state.someAddress);
+      console.log("amount", amount);
+      console.log("to", this.state.someAddress);
       const tx = signer.sendTransaction({
         to: this.state.someAddress, // a quien se le envia el token nativo
         value: amount, // cantidad en wei
@@ -128,12 +129,12 @@ class App extends React.Component {
       console.log(receipt);
       //alert(JSON.stringify(receipt));
 
-      this.openTuBoleto(amountStr);      
-      
+      this.openTuBoleto(amountStr);
+
     } catch (e) {
       if (e.message.indexOf("execution reverted: transfer value exceeded balance of sender") !== -1) {
         // not enough balance
-        alert("Sorry, you don't have enough AETH 😢");
+        alert("Sorry, you don't have enough " + NATIVE_TOKEN_SYMBOL + " 😢");
       } else {
         console.log(e);
         console.error(e);
@@ -180,7 +181,7 @@ class App extends React.Component {
       conectionDependantContent = (
         <>
           <div>
-            <button onClick={() => this.sendAETH(amountStr)}>🔁 Retry sending {amountStr} AETH to top up TuBoleto</button>
+            <button onClick={() => this.sendNativeToken(amountStr)}>🔁 Retry sending {amountStr + " " + NATIVE_TOKEN_SYMBOL} to top up TuBoleto</button>
           </div>
           <p>
             <span style={{
