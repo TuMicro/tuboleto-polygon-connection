@@ -56,7 +56,13 @@ Deploy:
 yarn build && firebase deploy --only hosting && time /t
 ```
 
-## Other commands
+## Utils
 
 yarn add firebase
 firebase init hosting
+
+Showing the commits tree:
+```
+git log --oneline --graph --decorate --all
+```
+
