@@ -10,6 +10,7 @@ const sleep = function (ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 const NATIVE_TOKEN_SYMBOL = "MATIC";
+const CHAIN_ID_TO_REQUEST = 137;
 
 class App extends React.Component {
 
@@ -54,6 +55,11 @@ class App extends React.Component {
           console.log(accounts);
         });
 
+        if (provider.chainId !== CHAIN_ID_TO_REQUEST) {
+          alert(`Please switch to the ${NATIVE_TOKEN_SYMBOL} chain`);
+          throw new Error(`Please switch to the ${NATIVE_TOKEN_SYMBOL} chain`);
+        }
+
         this.setState({ provider, kit }); // equivale a this.setState({provider : provider, kit : kit});
       }
 
@@ -65,7 +71,6 @@ class App extends React.Component {
     } catch (e) {
       console.error(e);
     }
-
   }
 
   sendNativeToken = async (amountStr) => {
@@ -231,7 +236,7 @@ class App extends React.Component {
 
           <p style={{
             fontSize: '8px',
-          }}>TuBoleto - Polygon connector v0.0.1</p>
+          }}>TuBoleto - Polygon connector v0.0.2</p>
         </header>
       </div>
     )
