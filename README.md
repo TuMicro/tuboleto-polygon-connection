@@ -39,6 +39,14 @@ You can [read more about using Wallet Connect v1 here](https://docs.walletconnec
 
 This example was started with [Create React App](https://reactjs.org/docs/create-a-new-react-app.html). Unnecessary files were deleted.
 
+## Deploy (production):
+
+Don't forget to run `yarn` to install dependencies first.
+
+Then run:
+```
+yarn build && firebase deploy --only hosting && time /t
+```
 
 ## Other useful commands:
 
@@ -50,16 +58,15 @@ npm install -g firebase-tools
 firebase login
 ```
 
-Deploy:
-
+Add a package:
 ```
-yarn build && firebase deploy --only hosting && time /t
-```
-
-## Utils
-
 yarn add firebase
+```
+
+Setup hosting for the first time:
+```
 firebase init hosting
+```
 
 Showing the commits tree:
 ```
